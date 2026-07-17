@@ -24,7 +24,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author shunji suzuki
  */
 public class Step01VariableTest extends PlainTestCase {
 
@@ -47,7 +47,16 @@ public class Step01VariableTest extends PlainTestCase {
         String piari = null;
         String dstore = "mai";
         sea = sea + land + piari + ":" + dstore;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => mystic8null:mai
+        //         javaって型が違っても足し算で連結できるんだろうか
+        //         できるっぽい https://www.javadrive.jp/start/ope/index14.html
+        //         じゃあ、nullはどうなるんだろう
+        //         そもそも Stringはプリミティブ型じゃないからnullがありえるんだな
+        //         java の型 https://qiita.com/t-yama-3/items/94ce9082b8c1eafda38f
+        //         加算できそうじゃない？ https://qiita.com/sekitaka_1214/items/37f6ef9c52e21c8d4093
+        //        言語仕様　https://docs.oracle.com/javase/jp/26/docs/specs/jls/index.html
+        //        あった。　https://docs.oracle.com/javase/specs/jls/se21/html/jls-5.html#jls-5.1.11
+        //        じゃあ全部連結されるか
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -56,7 +65,9 @@ public class Step01VariableTest extends PlainTestCase {
         String land = "oneman";
         sea = land;
         land = land + "'s dreams";
-        log(sea); // your answer? => 
+        log(sea); // your answer? => omeman
+        //        上書きってことだよね
+        //        log(land); -> omeman's dreams
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -65,7 +76,8 @@ public class Step01VariableTest extends PlainTestCase {
         int land = 415;
         sea = land;
         land++;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 415
+        log(land); // your answer? => 416
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -75,7 +87,12 @@ public class Step01VariableTest extends PlainTestCase {
         sea = land;
         sea = land.add(new BigDecimal(1));
         sea.add(new BigDecimal(1));
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 417
+        //        おっと予想外
+        //        returns: this + augend ということは addは破壊的処理じゃないのか。
+        //        pythonでいうところのlist.sort()かsorted()みたいなことか
+        //        > BigDecimal は 高精度な10進数演算 をサポートするクラス https://efficientify.secret.jp/development/programming/%E3%80%90java%E4%B8%AD%E7%B4%9A%E3%80%91bigdecimal%E3%81%AE%E6%AD%A3%E3%81%97%E3%81%84%E4%BD%BF%E3%81%84%E6%96%B9%EF%BC%9A%E4%B8%B8%E3%82%81%E3%83%BB%E6%AF%94%E8%BC%83%E3%83%BB%E6%B3%A8%E6%84%8F/
+        //      しかもBigDecimalはイミュータブルなクラスだから、add()は新しいBigDecimalを返すだけで、元のseaは変わらない
     }
 
     // ===================================================================================
@@ -89,19 +106,24 @@ public class Step01VariableTest extends PlainTestCase {
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_String() {
         String sea = instanceBroadway;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
+        //        参照型はNullが初期値になるらしい。Stringは参照型。プリミティブじゃない。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
         int sea = instanceDockside;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0
+        //        上と同じ
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_Integer() {
         Integer sea = instanceHangar;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
+        //        値型（プリミティブ型）、参照型（クラス型）、ラッパークラスに分けられるっぽい。 https://www.sejuku.net/blog/22828
+        //        いや、Stringだけ浮いてるの気持ち悪いな。
+        //        https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html これを読み解けたら型について網羅的にわかりそう。PrimitiveとReferenceしかないっぽい。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -110,7 +132,7 @@ public class Step01VariableTest extends PlainTestCase {
         instanceMagiclamp = "magician";
         helpInstanceVariableViaMethod(instanceMagiclamp);
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
-        log(sea); // your answer? => 
+        log(sea); // your answer? =>
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -204,7 +226,7 @@ public class Step01VariableTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     *
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
