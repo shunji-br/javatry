@@ -57,6 +57,10 @@ public class Step01VariableTest extends PlainTestCase {
         //        言語仕様　https://docs.oracle.com/javase/jp/26/docs/specs/jls/index.html
         //        あった。　https://docs.oracle.com/javase/specs/jls/se21/html/jls-5.html#jls-5.1.11
         //        じゃあ全部連結されるか
+        // TODO suzuki [いいね] しっかり調べてくださってありがとうございます by jflute (2026/07/22)
+        // Javaだと、+してる中にStringがいたらどんな型もStringに化ていきます。
+        // 内部的には、toString()メソッドが呼ばれて文字列に変換されていきます。
+        // 今回だと、sea + land ... のところで、land.toString()が呼ばれるイメージです。 
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -68,6 +72,9 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => omeman
         //        上書きってことだよね
         //        log(land); -> omeman's dreams
+        // TODO suzuki [ふぉろー] そうですね。sea変数の指し示すアドレスを上書きしています by jflute (2026/07/22)
+        // seaとlandは一瞬、同じインスタンスを指し示します。
+        // TODO jflute 1on1にて、変数とインスタンスの関係性について話する予定 (2026/07/22)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -93,6 +100,11 @@ public class Step01VariableTest extends PlainTestCase {
         //        pythonでいうところのlist.sort()かsorted()みたいなことか
         //        > BigDecimal は 高精度な10進数演算 をサポートするクラス https://efficientify.secret.jp/development/programming/%E3%80%90java%E4%B8%AD%E7%B4%9A%E3%80%91bigdecimal%E3%81%AE%E6%AD%A3%E3%81%97%E3%81%84%E4%BD%BF%E3%81%84%E6%96%B9%EF%BC%9A%E4%B8%B8%E3%82%81%E3%83%BB%E6%AF%94%E8%BC%83%E3%83%BB%E6%B3%A8%E6%84%8F/
         //      しかもBigDecimalはイミュータブルなクラスだから、add()は新しいBigDecimalを返すだけで、元のseaは変わらない
+        // TODO suzuki 破壊的処理という言葉が良いですね笑 by jflute (2026/07/22)
+        // そして、JavaDocをしっかり読まれているのGoodです。
+        // immutableか？mutableか？でadd()も使い方が全然変わってきますので、
+        // クラスを見かけたらimmutableか？mutableか？を真っ先に気にするでも良いくらいで。
+        // TODO jflute 1on1にて、immutableのメリデメや歴史などのお話する予定 (2026/07/22)
     }
 
     // ===================================================================================
@@ -124,6 +136,10 @@ public class Step01VariableTest extends PlainTestCase {
         //        値型（プリミティブ型）、参照型（クラス型）、ラッパークラスに分けられるっぽい。 https://www.sejuku.net/blog/22828
         //        いや、Stringだけ浮いてるの気持ち悪いな。
         //        https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html これを読み解けたら型について網羅的にわかりそう。PrimitiveとReferenceしかないっぽい。
+        // TODO suzuki [いいね] そう、Stringにはprimitiveがないですからね by jflute (2026/07/22)
+        // あえていうなら、char[] がStringのprimitiveとも言えますが、
+        // Integer/int みたいな単一値の関係性ではないので、やはりちょっと異質ですよね。
+        // (Stringは実は複数の値を扱っている配列の抽象概念と言えるのかも!?)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
