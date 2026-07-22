@@ -57,24 +57,34 @@ public class Step01VariableTest extends PlainTestCase {
         //        言語仕様　https://docs.oracle.com/javase/jp/26/docs/specs/jls/index.html
         //        あった。　https://docs.oracle.com/javase/specs/jls/se21/html/jls-5.html#jls-5.1.11
         //        じゃあ全部連結されるか
-        // TODO suzuki [いいね] しっかり調べてくださってありがとうございます by jflute (2026/07/22)
+        // done suzuki [いいね] しっかり調べてくださってありがとうございます by jflute (2026/07/22)
         // Javaだと、+してる中にStringがいたらどんな型もStringに化ていきます。
         // 内部的には、toString()メソッドが呼ばれて文字列に変換されていきます。
         // 今回だと、sea + land ... のところで、land.toString()が呼ばれるイメージです。 
+        // #1on1: プログラミング言語の決め (C#だと空文字に) (2026/07/22)
+        // nullって出ることのメリデメ:
+        // デメリット: 意図しない文字列になっちゃう(by すずきさん) → 画面とかでnullって出ちゃう可能性高い
+        //  (画面とメールの気合いの入れ方が違う。nullって出てきやすい)
+        // メリット: 画面とかログとかでnullって出るので、開発時は不具合がわかりやすい
+        // 些細な違いですけど、こういった細かいことでもメリデメを分析する習慣自体が大事。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
-        String sea = "mystic";
-        String land = "oneman";
+        String sea = "mystic"; // 1
+        String land = "oneman"; // 2
         sea = land;
-        land = land + "'s dreams";
+        land = land + "'s dreams"; // 3(+1)
         log(sea); // your answer? => omeman
         //        上書きってことだよね
         //        log(land); -> omeman's dreams
-        // TODO suzuki [ふぉろー] そうですね。sea変数の指し示すアドレスを上書きしています by jflute (2026/07/22)
+        // done suzuki [ふぉろー] そうですね。sea変数の指し示すアドレスを上書きしています by jflute (2026/07/22)
         // seaとlandは一瞬、同じインスタンスを指し示します。
-        // TODO jflute 1on1にて、変数とインスタンスの関係性について話する予定 (2026/07/22)
+        // done jflute 1on1にて、変数とインスタンスの関係性について話する予定 (2026/07/22)
+        // #1on1: インスタンスとは？ (2026/07/22)
+        // クラスを実装化/実体化したもの。 by すずきさん
+        // 一軒家のお話。インスタンスという概念に注目して欲しい。
+        // プログラムをみたら、変数とインスタンスの関係性をイメージできるようになって欲しい。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -85,15 +95,18 @@ public class Step01VariableTest extends PlainTestCase {
         land++;
         log(sea); // your answer? => 415
         log(land); // your answer? => 416
+        // #1on1: プリミティブ型について。C言語やKotlinとの比較 (2026/07/22)
+        // staticの話から、companion objectの話へ。
+        // Singletonパターンとは？ KotlinとScalaの違いなどなど。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_BigDecimal() {
-        BigDecimal sea = new BigDecimal(94);
-        BigDecimal land = new BigDecimal(415);
+        BigDecimal sea = new BigDecimal(94); // 1
+        BigDecimal land = new BigDecimal(415); // 2
         sea = land;
-        sea = land.add(new BigDecimal(1));
-        sea.add(new BigDecimal(1));
+        sea = land.add(new BigDecimal(1)); // 3+4
+        sea.add(new BigDecimal(1)); // 5+6
         log(sea); // your answer? => 417
         //        おっと予想外
         //        returns: this + augend ということは addは破壊的処理じゃないのか。
@@ -105,6 +118,14 @@ public class Step01VariableTest extends PlainTestCase {
         // immutableか？mutableか？でadd()も使い方が全然変わってきますので、
         // クラスを見かけたらimmutableか？mutableか？を真っ先に気にするでも良いくらいで。
         // TODO jflute 1on1にて、immutableのメリデメや歴史などのお話する予定 (2026/07/22)
+        // #1on1: BigDecimalのソースコードリーディング、immutableかどうかの判別 (2026/07/22)
+        // #1on1: immutable/mutableのメリデメ (2026/07/22)
+        // immutableのメリット: 変えちゃいけないものを保持するのに適しているbyすすぎさん → 間違い防止
+        // 間違い防止で可読性も良くなる、なぜ？ → 例外処理チェック処理が不要になる＆可読性...
+        // 変わってないことが確定することで読み飛ばしやすくなる。
+        // immutableのデメリット: 応用が利かない？byすずきさん コードが少しボリューム出る？byすずきさん
+        //
+        // TODO jflute ↑次回1on1で続き (2026/07/22)
     }
 
     // ===================================================================================
