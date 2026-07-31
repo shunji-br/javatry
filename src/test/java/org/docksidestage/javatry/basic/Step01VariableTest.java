@@ -169,7 +169,48 @@ public class Step01VariableTest extends PlainTestCase {
         instanceMagiclamp = "magician";
         helpInstanceVariableViaMethod(instanceMagiclamp);
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
-        log(sea); // your answer? =>
+        log(sea); // your answer? => bbb|1|null|burn
+        //  x
+        // instanceBroadway
+        //     helpInstanceVariableViaMethod() で呼ばれていて"bigland"に変わっている。
+        //     this.がついていなかったのでインスタンス変数を参照しないと思っていたが、同名のローカル変数や引数がなければ参照するらしい。
+        //  instanceDockside
+        //     helpInstanceVariableViaMethod() で前置インクリメントで1増えている。デフォは0
+        //  instanceHangar
+        //     helpInstanceVariableViaMethod() ではノータッチ。デフォのnullが文字列として連結される。
+        // instanceMagiclamp
+        //     helpInstanceVariableViaMethod() で呼ばれているが、引数と同名のため、引数の方が優先されている。インスタンス変数は参照されない。
+
+        // 一旦自分が知っているクラスに存在する概念とJavaの言語仕様を整理する
+        //    private String instanceBroadway;
+        //    private int instanceDockside;
+        //    private Integer instanceHangar;
+        //    private String instanceMagiclamp;
+        //    クラス直下に書かれている上記の変数たちは「インスタンス変数」
+        //    「メンバ変数」とも呼ばれるが、よくよく考えたら何で？ -> C言語から来ているっぽい。 struct memberが由来らしい
+        //
+        //    private static int xxx; とかになってたら「クラス変数」
+        //            なぜstaticというキーワードなのか -> クラスが読み込まれた瞬間にメモリの決まった場所に固定して配置されるから
+        //
+        //    public void myMethod() {
+        //        int zzz = 0;
+        //    }
+        //    のようにメソッド内に書かれている変数は「ローカル変数」
+        //        寿命はメソッドの実行が終わるまで
+        //
+        //　   今回の問題に関連して調べたこと
+        //        1. インスタンス変数と同じ名前の仮引数をメソッドに渡すと、インスタンス変数の判定になるのか -> ならない
+        //        優先順位は「ローカル側（引数・ローカル変数） ＞ インスタンス変数」
+        //        引数とローカル変数に同じ名前をつけるとコンパイルエラーになる
+        //        明示的にインスタンス変数を参照する場合は this. をつける
+        //
+        //        2. Javaでは全ての引数は値渡し（pass by value）である。参照型の引数も値渡しである。
+        //　      プリミティブ型を渡した場合 -> 元の変数の値は変わらない
+        //　      参照型を渡した場合 -> 受け取ったメソッド側で新しくアドレスを保持する変数が定義されるため、元の参照先は変わらない
+        //        参照先がミュータブルなら変更できる
+        //        Java.langパッケージに用意されている基本8つのラッパークラスはimmutable
+        //            Byte, Short, Integer, Long, Float, Double, Character, Boolean
+
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -186,17 +227,19 @@ public class Step01VariableTest extends PlainTestCase {
     //                                 ---------------------
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_method_argument_immutable_methodcall() {
-        String sea = "harbor";
-        int land = 415;
+        String sea = "harbor"; // 1
+        int land = 415; // 2
         helpMethodArgumentImmutableMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor
     }
 
-    private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
+    private void helpMethodArgumentImmutableMethodcall(String sea, int land) { // 同名だけどローカル優先。sea, landの変数領域確保
         ++land;
-        String landStr = String.valueOf(land); // is "416"
-        sea.concat(landStr);
+        String landStr = String.valueOf(land); // is "416" 3
+        sea.concat(landStr); // 多分 "harbor416" だけど、それはこのメソッド内でのお話
+        // Stringはimmutableだからここでもインスタンス生成 4
     }
+    // これは一発でいけた。インスタンス生成回数は4
 
     // -----------------------------------------------------
     //                                   Mutable Method-call
