@@ -211,6 +211,14 @@ public class Step01VariableTest extends PlainTestCase {
         //        Java.langパッケージに用意されている基本8つのラッパークラスはimmutable
         //            Byte, Short, Integer, Long, Float, Double, Character, Boolean
 
+        // TODO suzuki [いいね] 詳しく調べて素晴らしいです by jflute (2026/08/05)
+        // メソッド呼び出しで引数にとある変数を渡しても...
+        // 実際にメソッド引数に渡るのはその中身であって、指定した変数自体ではないというイメージですね。
+        // オブジェクト型の場合はアドレスがコピーされるだけというイメージで。
+
+        // TODO suzuki [読み物課題] プリミティブ型とラッパー型  by jflute (2026/08/05)
+        // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
+        // ↑裏隔週の自習時間の中で読んでくださって大丈夫です。
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -240,6 +248,7 @@ public class Step01VariableTest extends PlainTestCase {
         // Stringはimmutableだからここでもインスタンス生成 4
     }
     // これは一発でいけた。インスタンス生成回数は4
+    // TODO suzuki [いいね] インスタンスエクササイズGood(^^ by jflute (2026/08/05)
 
     // -----------------------------------------------------
     //                                   Mutable Method-call
