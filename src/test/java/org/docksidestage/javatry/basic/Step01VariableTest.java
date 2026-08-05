@@ -98,6 +98,8 @@ public class Step01VariableTest extends PlainTestCase {
         // #1on1: プリミティブ型について。C言語やKotlinとの比較 (2026/07/22)
         // staticの話から、companion objectの話へ。
         // Singletonパターンとは？ KotlinとScalaの違いなどなど。
+        // #1on1: companion object と static の比較 (2026/08/05)
+        // 一方で、rootのクラスに object を付けるとシングルトン。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -113,19 +115,46 @@ public class Step01VariableTest extends PlainTestCase {
         //        pythonでいうところのlist.sort()かsorted()みたいなことか
         //        > BigDecimal は 高精度な10進数演算 をサポートするクラス https://efficientify.secret.jp/development/programming/%E3%80%90java%E4%B8%AD%E7%B4%9A%E3%80%91bigdecimal%E3%81%AE%E6%AD%A3%E3%81%97%E3%81%84%E4%BD%BF%E3%81%84%E6%96%B9%EF%BC%9A%E4%B8%B8%E3%82%81%E3%83%BB%E6%AF%94%E8%BC%83%E3%83%BB%E6%B3%A8%E6%84%8F/
         //      しかもBigDecimalはイミュータブルなクラスだから、add()は新しいBigDecimalを返すだけで、元のseaは変わらない
-        // TODO suzuki 破壊的処理という言葉が良いですね笑 by jflute (2026/07/22)
+        // done suzuki 破壊的処理という言葉が良いですね笑 by jflute (2026/07/22)
         // そして、JavaDocをしっかり読まれているのGoodです。
         // immutableか？mutableか？でadd()も使い方が全然変わってきますので、
         // クラスを見かけたらimmutableか？mutableか？を真っ先に気にするでも良いくらいで。
-        // TODO jflute 1on1にて、immutableのメリデメや歴史などのお話する予定 (2026/07/22)
+        // done jflute 1on1にて、immutableのメリデメや歴史などのお話する予定 (2026/07/22)
         // #1on1: BigDecimalのソースコードリーディング、immutableかどうかの判別 (2026/07/22)
+
         // #1on1: immutable/mutableのメリデメ (2026/07/22)
+        //
         // immutableのメリット: 変えちゃいけないものを保持するのに適しているbyすすぎさん → 間違い防止
         // 間違い防止で可読性も良くなる、なぜ？ → 例外処理チェック処理が不要になる＆可読性...
         // 変わってないことが確定することで読み飛ばしやすくなる。
-        // immutableのデメリット: 応用が利かない？byすずきさん コードが少しボリューム出る？byすずきさん
         //
-        // TODO jflute ↑次回1on1で続き (2026/07/22)
+        // immutableのデメリット: 応用が利かない？byすずきさん コードが少しボリューム出る？byすずきさん
+        // (2026/08/05)
+        // → immutableを使ったらimmutableやり切らないと。あと、add()のように確かにボリューム出るのは確か。
+        // → immutableをやるのにmutableよりはコード上の手間が少し掛かる印象。
+        // → immutableのクラスを作るのに便利な文法がないと若干めんどう。(Javaだとちょっと足りない)
+        // インスタンスが多くなりがち、メモリをたくさん使う。(インフラ都合)
+        //
+        // #1on1: immutableの歴史 (2026/08/05)
+        // $昔は、資源に余裕がないbyすずきさん
+        // メモリがめっちゃ少なかったので、immutableだとnewしすぎ印象 by jflute
+        // 時が進み、メモリがたんまりある時代になって...newそんな気にしなくなって...
+        // 人間都合のimmutableを遠慮なく享受できるようなったかなと。
+        // あと、言語の文法も進んで、immutableをやりやすくなった。
+        //
+        // #1on1: immutableのバランス (2026/08/05)
+        // 100%immutableするか？
+        //  Java: immutable寄りだけど、徹底は難しい!?(印象) // 8:2
+        //  Kotlin: かなりimmutable寄りできる!?(印象)
+        //  Scala: 相当immutable寄りな印象
+        // 言語によるサポートの違いだったり、歴史の違いだったり、コンセプトの違いだったり。
+        //
+        // jfluteは、Javaメインで、immutable寄りだけど無理はしない。
+        // mutableのデメリット(immutableのメリットを得られない)が顕在化しないように配慮する。
+        // 安全性と可読性を演出する手段はimmutableだけじゃないので、別の手段で工夫してどうにかする。
+        // (immutableは強力な武器だけど絶対条件ではない)
+        //
+        // done jflute ↑次回1on1で続き (2026/07/22)
     }
 
     // ===================================================================================
@@ -157,7 +186,7 @@ public class Step01VariableTest extends PlainTestCase {
         //        値型（プリミティブ型）、参照型（クラス型）、ラッパークラスに分けられるっぽい。 https://www.sejuku.net/blog/22828
         //        いや、Stringだけ浮いてるの気持ち悪いな。
         //        https://docs.oracle.com/javase/specs/jls/se8/html/jls-4.html これを読み解けたら型について網羅的にわかりそう。PrimitiveとReferenceしかないっぽい。
-        // TODO suzuki [いいね] そう、Stringにはprimitiveがないですからね by jflute (2026/07/22)
+        // done suzuki [いいね] そう、Stringにはprimitiveがないですからね by jflute (2026/07/22)
         // あえていうなら、char[] がStringのprimitiveとも言えますが、
         // Integer/int みたいな単一値の関係性ではないので、やはりちょっと異質ですよね。
         // (Stringは実は複数の値を扱っている配列の抽象概念と言えるのかも!?)
@@ -211,10 +240,11 @@ public class Step01VariableTest extends PlainTestCase {
         //        Java.langパッケージに用意されている基本8つのラッパークラスはimmutable
         //            Byte, Short, Integer, Long, Float, Double, Character, Boolean
 
-        // TODO suzuki [いいね] 詳しく調べて素晴らしいです by jflute (2026/08/05)
+        // done suzuki [いいね] 詳しく調べて素晴らしいです by jflute (2026/08/05)
         // メソッド呼び出しで引数にとある変数を渡しても...
         // 実際にメソッド引数に渡るのはその中身であって、指定した変数自体ではないというイメージですね。
         // オブジェクト型の場合はアドレスがコピーされるだけというイメージで。
+        // #1on1: メンバ変数という名前のお話 (2026/08/05)
 
         // TODO suzuki [読み物課題] プリミティブ型とラッパー型  by jflute (2026/08/05)
         // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
@@ -236,7 +266,7 @@ public class Step01VariableTest extends PlainTestCase {
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_method_argument_immutable_methodcall() {
         String sea = "harbor"; // 1
-        int land = 415; // 2
+        int land = 415; // 2 → ここはIntegerインスタンスは作られてない
         helpMethodArgumentImmutableMethodcall(sea, land);
         log(sea); // your answer? => harbor
     }
@@ -248,7 +278,11 @@ public class Step01VariableTest extends PlainTestCase {
         // Stringはimmutableだからここでもインスタンス生成 4
     }
     // これは一発でいけた。インスタンス生成回数は4
-    // TODO suzuki [いいね] インスタンスエクササイズGood(^^ by jflute (2026/08/05)
+    // done suzuki [いいね] インスタンスエクササイズGood(^^ by jflute (2026/08/05)
+    // #1on1: Stringに限定しているわけではないインスタンスエクササイズ (2026/08/05)
+    // ただ、int land = 415; では、Integerインスタンスが作られてないです。
+    // プリミティブ型の復習もっかい。
+    // TODO jflute 次回1on1ここから、immutableとmutableの引数の違いを体験する (2026/08/05)
 
     // -----------------------------------------------------
     //                                   Mutable Method-call
