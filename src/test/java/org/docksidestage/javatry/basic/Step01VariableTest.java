@@ -246,10 +246,11 @@ public class Step01VariableTest extends PlainTestCase {
         // オブジェクト型の場合はアドレスがコピーされるだけというイメージで。
         // #1on1: メンバ変数という名前のお話 (2026/08/05)
 
-        // TODO done suzuki [読み物課題] プリミティブ型とラッパー型  by jflute (2026/08/05)
+        // done suzuki [読み物課題] プリミティブ型とラッパー型  by jflute (2026/08/05)
         // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
         // ↑裏隔週の自習時間の中で読んでくださって大丈夫です。
-//        done suzuki [読み物課題] Booleanのラッパーは混乱しやすい。確かに。
+        //        done suzuki [読み物課題] Booleanのラッパーは混乱しやすい。確かに。
+        // #1on1: 外部の通信データを受け取る時とかに便宜上Booleanを使うくらい (2026/08/17)
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -283,7 +284,27 @@ public class Step01VariableTest extends PlainTestCase {
     // #1on1: Stringに限定しているわけではないインスタンスエクササイズ (2026/08/05)
     // ただ、int land = 415; では、Integerインスタンスが作られてないです。
     // プリミティブ型の復習もっかい。
-    // TODO jflute 次回1on1ここから、immutableとmutableの引数の違いを体験する (2026/08/05)
+    // done jflute 次回1on1ここから、immutableとmutableの引数の違いを体験する (2026/08/05)
+    // #1on1: 読み飛ばしの実感を得てみよう (2026/08/17)
+    // "変わってないことが確定することで読み飛ばしやすくなる。"
+    // このエクササイズは、helpメソッドを読まなくても答えがわかる。
+    //
+    // mutableな引数だと、必ず中身を読まないと変化させてるかどうかわからない。
+    // immutableは、一つの事象しか発生しない。→ helpの中で変えてない
+    // mutableは、二つの事象が発生する。→ helpの中で変えてない or 変えてる
+    //
+    // immutableは、要は選択肢を狭めている。
+    // 選択肢が少ない方が、安全で、読みやすい。
+    // 制限を掛けることで、得られるものがある。
+    // 
+    // よもやま:
+    // ぼくらは、いかに制限デザインをするか？ (immutableに限らず)
+    // なんでもできるってのは意外に不便だったりする。(使うのか怖い)
+    // フレームワークのデザイン、webサービスのUIのデザインもみな同じ。
+    //
+    // ただし、適材適所すぎるのもつらい。
+    // (こういうときはimmutable使いましょう、こういうときはmutable使いましょう...)
+    // 使う選択肢が多すぎると、学習コスト＆判断コストがかかる。
 
     // -----------------------------------------------------
     //                                   Mutable Method-call
@@ -296,8 +317,8 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => harbor416 | o
     }
     // StringBuilder とは？
-//    StringBuilder (mutable, スレッドセーフじゃない)
-//    StringBuffer (mutable, スレッドセーフ)
+    //    StringBuilder (mutable, スレッドセーフじゃない)
+    //    StringBuffer (mutable, スレッドセーフ)
     // String (immutable, スレッドセーフ)
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
@@ -343,13 +364,14 @@ public class Step01VariableTest extends PlainTestCase {
      * </pre>
      */
     int piari;
+
     public void test_variable_writing() {
         // define variables here
         String sea = "mystic";
         Integer land = null;
         log(sea + "," + land + "," + piari);
     }
-//    mystic,null,0
+    //    mystic,null,0
 
     // ===================================================================================
     //                                                                           Good Luck
@@ -375,5 +397,11 @@ public class Step01VariableTest extends PlainTestCase {
 
         int identityHash = System.identityHashCode(wrapperInteger);
         System.out.println("参照アドレス (16進数): 0x" + Integer.toHexString(identityHash));
+
+        log(new Object().toString()); // java.lang.Object@380fb434
+        // ↑中では、toHexString()
     }
+    // #1on1: おお、よく頑張った (2026/08/17)
+    // hashCodeは厳密にはアドレスにはならず、すごくユニークに近い固定乱数。
+    // hashCodeの役割の一例。HashMapで高速探索。
 }
