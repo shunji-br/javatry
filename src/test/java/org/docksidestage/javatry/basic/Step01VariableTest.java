@@ -246,9 +246,10 @@ public class Step01VariableTest extends PlainTestCase {
         // オブジェクト型の場合はアドレスがコピーされるだけというイメージで。
         // #1on1: メンバ変数という名前のお話 (2026/08/05)
 
-        // TODO suzuki [読み物課題] プリミティブ型とラッパー型  by jflute (2026/08/05)
+        // TODO done suzuki [読み物課題] プリミティブ型とラッパー型  by jflute (2026/08/05)
         // https://dbflute.seasar.org/ja/manual/topic/programming/java/beginners.html#primitivewrapper
         // ↑裏隔週の自習時間の中で読んでくださって大丈夫です。
+//        done suzuki [読み物課題] Booleanのラッパーは混乱しやすい。確かに。
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -289,15 +290,19 @@ public class Step01VariableTest extends PlainTestCase {
     //                                   -------------------
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_method_argument_mutable_methodcall() {
-        StringBuilder sea = new StringBuilder("harbor");
+        StringBuilder sea = new StringBuilder("harbor"); // 1
         int land = 415;
         helpMethodArgumentMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor416 | o
     }
+    // StringBuilder とは？
+//    StringBuilder (mutable, スレッドセーフじゃない)
+//    StringBuffer (mutable, スレッドセーフ)
+    // String (immutable, スレッドセーフ)
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
         ++land;
-        sea.append(land);
+        sea.append(land); // mutableだから渡されたアドレスのインスタンスに直接影響する
     }
 
     // -----------------------------------------------------
@@ -305,16 +310,17 @@ public class Step01VariableTest extends PlainTestCase {
     //                                   -------------------
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_method_argument_variable_assignment() {
-        StringBuilder sea = new StringBuilder("harbor");
+        StringBuilder sea = new StringBuilder("harbor"); // instance 1
         int land = 415;
         helpMethodArgumentVariable(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor | o
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
         ++land;
         String seaStr = sea.toString(); // is "harbor"
-        sea = new StringBuilder(seaStr).append(land);
+        sea = new StringBuilder(seaStr).append(land); // instance 2
+        // 新しい変数seaが作られて、そこに新しいインスタンスが入るので、元のseaは変わらない
     }
 
     // ===================================================================================
@@ -336,9 +342,14 @@ public class Step01VariableTest extends PlainTestCase {
      * o すべての変数をlog()でカンマ区切りの文字列で表示
      * </pre>
      */
+    int piari;
     public void test_variable_writing() {
         // define variables here
+        String sea = "mystic";
+        Integer land = null;
+        log(sea + "," + land + "," + piari);
     }
+//    mystic,null,0
 
     // ===================================================================================
     //                                                                           Good Luck
@@ -349,11 +360,20 @@ public class Step01VariableTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     *
+     * intとIntegerのオブジェクトを生成し、Integerにはヒープ領域へのアドレスが格納されていることを示してください。
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_variable_yourExercise() {
-        // write your code here
+        int primitiveInt = 10;
+        Integer wrapperInteger = new Integer(20);
+
+        // Display the values and their memory addresses
+        log("Primitive int value: " + primitiveInt);
+        log("Wrapper Integer value: " + wrapperInteger);
+        // logは自動的にtoString()を呼ぶらしい。
+
+        int identityHash = System.identityHashCode(wrapperInteger);
+        System.out.println("参照アドレス (16進数): 0x" + Integer.toHexString(identityHash));
     }
 }

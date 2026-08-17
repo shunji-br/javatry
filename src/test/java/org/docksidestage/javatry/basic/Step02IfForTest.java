@@ -25,7 +25,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author shunji suzuki
  */
 public class Step02IfForTest extends PlainTestCase {
 
@@ -52,7 +52,7 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 7;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7 | o
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -67,7 +67,7 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 9;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7 | o
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -98,16 +98,14 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 9;
         }
+        // 1810
         if (sea >= 9 || (sea > 7 && sea < 9)) {
             sea--;
             if (sea % 2 == 1) {
                 sea++;
             }
         }
-        if (land) {
-            sea = 10;
-        }
-        log(sea); // your answer? => 
+        log(sea); // your answer? =>
     }
 
     // ===================================================================================
