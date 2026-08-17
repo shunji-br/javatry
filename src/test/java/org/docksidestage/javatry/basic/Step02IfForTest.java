@@ -128,6 +128,9 @@ public class Step02IfForTest extends PlainTestCase {
         //
         // TODO suzuki [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/17)
         // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
+
+        // #1on1: 新卒を取る大切さ (2026/08/17)
+        // 組織的な話。
     }
 
     // ===================================================================================
