@@ -82,7 +82,10 @@ public class Step02IfForTest extends PlainTestCase {
             sea = ++sea * 2;
         } else if (sea >= 903 || land) {
             if (sea % 2 == 0) {
-                sea = sea++ * 2;
+                sea = sea++ * 2; // 後置インクリメントの式が返す値を905と勘違いした
+                log(sea);
+                sea = sea++;
+                log(sea);
             }
             if (!land) {
                 land = true; // ここを通ればseaは10だ
@@ -100,7 +103,13 @@ public class Step02IfForTest extends PlainTestCase {
         }
         // 1810
         // #1on1: ↑1810は間違いは自分で発見、実際は8だった (2026/08/17)
-        // TODO suzuki なんで1810じゃなく8だったのか？探ってみてください by jflute (2026/08/17)
+        // TODO done suzuki なんで1810じゃなく8だったのか？探ってみてください by jflute (2026/08/17)
+        // インクリメントの誤解（後置インクリメントと前置インクリメントの動作を切り分けられていなかった
+        // if (x++ < 10) <- x < 10が評価された後にxが1増えるみたいな考え方をしていた
+        // おそらく本質は「評価」と「値」の順序
+        // 前置なら評価→値、後置なら値→評価
+        // https://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.14.2
+        // > The value of the postfix increment expression is the value of the variable before the new value is stored.
         if (sea >= 9 || (sea > 7 && sea < 9)) {
             sea--;
             if (sea % 2 == 1) {
@@ -110,7 +119,7 @@ public class Step02IfForTest extends PlainTestCase {
         if (land) {
             sea = 10;
         }
-        log(sea); // your answer? =>
+        log(sea); // your answer? => 10 | o (retry)
 
         // #1on1: 漠然読み (2026/08/17)
         // o まず漠然読みで構造を把握する (この場合だと5分割)
@@ -126,8 +135,10 @@ public class Step02IfForTest extends PlainTestCase {
         // そうしたら、またフォーカス読みしていけばいい。
         // それで何回かチャレンジして、3,4回繰り返しても、網羅的に読むよりは早い(ことが多い)。
         //
-        // TODO suzuki [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/17)
+        // TODO done suzuki [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/17)
         // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
+        // 仮説を立てて実行することにより効率的に物事を進めることができると伝える著書だと認識していた
+        // 仮説にぶつかってから、事実と仮説を切り分けていることが検証に効いてくる。
 
         // #1on1: 新卒を取る大切さ (2026/08/17)
         // 組織的な話。
@@ -146,17 +157,17 @@ public class Step02IfForTest extends PlainTestCase {
                 sea = stage;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside | o
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_basic() {
         List<String> stageList = prepareStageList();
         String sea = null;
-        for (String stage : stageList) {
-            sea = stage;
+        for (String stage : stageList) { // 拡張for文 https://qiita.com/masa-kunikata/items/72703085dbf59cc83052
+            sea = stage; // 毎回置き換わる
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => magiclamp | o
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -167,12 +178,12 @@ public class Step02IfForTest extends PlainTestCase {
             if (stage.startsWith("br")) {
                 continue;
             }
-            sea = stage;
+            sea = stage; // hangarまでは通る
             if (stage.contains("ga")) {
                 break;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hangar | o
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -181,14 +192,14 @@ public class Step02IfForTest extends PlainTestCase {
         StringBuilder sb = new StringBuilder();
         stageList.forEach(stage -> {
             if (sb.length() > 0) {
-                return;
+                return; // docksideが入ってreturn
             }
             if (stage.contains("i")) {
                 sb.append(stage);
             }
         });
         String sea = sb.toString();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside | o
     }
 
     // ===================================================================================
@@ -200,6 +211,16 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_making() {
         // write if-for here
+        List<String> stageList = prepareStageList();
+        List<String> resultList = new ArrayList<>();
+        for (String stage : stageList) {
+            if (stage.contains("a")) {
+                resultList.add(stage);
+            }
+        }
+        for (String stage : resultList) {
+            log(stage);
+        }
     }
 
     // ===================================================================================
