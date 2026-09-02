@@ -53,6 +53,7 @@ public class Step08Java8FunctionTest extends PlainTestCase {
         log("...Executing named class callback(!?)");
         helpCallbackConsumer(new St8BasicConsumer(title));
 
+        // #1on1: 無名インナークラス
         log("...Executing anonymous class callback");
         helpCallbackConsumer(new Consumer<String>() {
             public void accept(String stage) {
@@ -60,7 +61,22 @@ public class Step08Java8FunctionTest extends PlainTestCase {
             }
         });
 
+        // ↓↓↓ 挙動は何も変わってない
+        // #1on1: コンパイラーに推論させていったら、
+        // どんどん書かなくてもいいよねってものが出てきて... (2026/09/02)
+        // Lambda式まで省略できるようになった。
+        // (Lambdaの場合は、thisの指し示すものが違うとか、
+        // コンパイルされるとちょっと違う扱いされるとかちょこっと違いはあるけど、
+        // 普通に使ってる分にはほとんど同じものと考えても問題ない)
+
+        // #1on1: コールバックとは？ (2026/09/02)
+        // 一応、一般的な言葉で、電話の世界で使われる言葉。 (折り返し電話)
+        //  A → B
+        //  A ← B
+
         log("...Executing lambda block style callback");
+        // test_ → help
+        // test_ ← help
         helpCallbackConsumer(stage -> {
             log(stage + ": " + title);
         });
@@ -87,6 +103,7 @@ public class Step08Java8FunctionTest extends PlainTestCase {
         // your answer? => 
     }
 
+    // #1on1: 名前付きインナークラス (2026/09/02)
     private class St8BasicConsumer implements Consumer<String> {
 
         private final String title;

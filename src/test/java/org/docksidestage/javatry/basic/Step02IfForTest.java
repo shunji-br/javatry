@@ -103,13 +103,15 @@ public class Step02IfForTest extends PlainTestCase {
         }
         // 1810
         // #1on1: ↑1810は間違いは自分で発見、実際は8だった (2026/08/17)
-        // TODO done suzuki なんで1810じゃなく8だったのか？探ってみてください by jflute (2026/08/17)
+        // done suzuki なんで1810じゃなく8だったのか？探ってみてください by jflute (2026/08/17)
         // インクリメントの誤解（後置インクリメントと前置インクリメントの動作を切り分けられていなかった
         // if (x++ < 10) <- x < 10が評価された後にxが1増えるみたいな考え方をしていた
         // おそらく本質は「評価」と「値」の順序
         // 前置なら評価→値、後置なら値→評価
         // https://docs.oracle.com/javase/specs/jls/se7/html/jls-15.html#jls-15.14.2
         // > The value of the postfix increment expression is the value of the variable before the new value is stored.
+        // #1on1: Good, じっくり文法的なところまで調べてくださってOK (2026/09/02)
+        // 実際は、線引き自体を覚えておくのが面倒なので、単独行で使うとかが一般的かなと。
         if (sea >= 9 || (sea > 7 && sea < 9)) {
             sea--;
             if (sea % 2 == 1) {
@@ -135,10 +137,16 @@ public class Step02IfForTest extends PlainTestCase {
         // そうしたら、またフォーカス読みしていけばいい。
         // それで何回かチャレンジして、3,4回繰り返しても、網羅的に読むよりは早い(ことが多い)。
         //
-        // TODO done suzuki [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/17)
+        // done suzuki [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/08/17)
         // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
         // 仮説を立てて実行することにより効率的に物事を進めることができると伝える著書だと認識していた
         // 仮説にぶつかってから、事実と仮説を切り分けていることが検証に効いてくる。
+        // #1on1: ↑事実と仮説を切り分けとても大事Good (2026/09/02)
+        // 自分の中でデマを起こさないように
+        // // 自分の中でデマを広げさせない
+        // https://jflute.hatenadiary.jp/entry/20110619/nodema
+        // ↑1on1でちょこっと読み合わせ
+        // その勘違いのメカニズムを知っておくことで多少防げるかもしれない。
 
         // #1on1: 新卒を取る大切さ (2026/08/17)
         // 組織的な話。
@@ -184,6 +192,13 @@ public class Step02IfForTest extends PlainTestCase {
             }
         }
         log(sea); // your answer? => hangar | o
+
+        // #1on1: Javaの文法のループ二つ (2026/09/02)
+        // o intあいのfor文       : Java当初から (1995年)  // 伝統的なループ
+        //  → 仕組み: ループごとにindexで探すという形になっている
+        //  → ArrayListだったら速い(内部で配列の添字でアクセスしてるから)
+        // o 拡張for文(foreach文) : Java10年目くらいから (2005年くらい)
+        //  → 仕組み: 次の方どうぞ次の方どうぞ方式
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -200,6 +215,28 @@ public class Step02IfForTest extends PlainTestCase {
         });
         String sea = sb.toString();
         log(sea); // your answer? => dockside | o
+
+        // #1on1: forEach()メソッドとは？ (2026/09/02)
+        // $Lambda式を入れるループ。
+        // コンパイラーは、forEach()メソッドを、ループだと思ってない。
+        // ただのメソッド呼び出しで、引数でLambdaを入れただけ。
+        // ループの代理人をしているだけ。
+        //
+        // Java20年目くらいから (2015年) // 拡張for文の登場から10年くらい
+        // 後から入るってことは、当然便利だから入るってことでしょうと。
+        // forEach()は何が便利なの？何が良いのか？
+        //
+        // $Lambda式って変数に格納できる？
+        // yes, できる
+        // step8の先取りをして、Lambda式の仕組みとコールバックという言葉の話。
+        // forEach()メソッドは、1ループの処理を表現した別クラス別メソッドをnewして引数で入れてるだけ。
+        //
+        // forEach()メソッドの存在意義に関しては、
+        // forEach()メソッドへの置き換えエクササイズをやってもらって考えてもらって、
+        // 1on1にてフォロー予定。
+
+        // #1on1: 現場のKotlinでforを見つけたら教えてください (2026/09/02)
+        // なんで filter() とかの抽象度の高いメソッドを使ってないんだろうか？
     }
 
     // ===================================================================================
@@ -231,6 +268,7 @@ public class Step02IfForTest extends PlainTestCase {
      * (foreach文をforEach()メソッドへの置き換えてみましょう (修正前と修正後で実行結果が同じになるように))
      */
     public void test_iffor_refactor_foreach_to_forEach() {
+        // #1on1: そもそもforEach()メソッドの存在意義をエクササイズやりながら考えてみてください (2026/09/02)
         List<String> stageList = prepareStageList();
         String sea = null;
         for (String stage : stageList) {
