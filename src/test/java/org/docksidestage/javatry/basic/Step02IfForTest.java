@@ -270,16 +270,21 @@ public class Step02IfForTest extends PlainTestCase {
     public void test_iffor_refactor_foreach_to_forEach() {
         // #1on1: そもそもforEach()メソッドの存在意義をエクササイズやりながら考えてみてください (2026/09/02)
         List<String> stageList = prepareStageList();
-        String sea = null;
-        for (String stage : stageList) {
+        String[] seaHolder = new String[1];
+        boolean[] doneHolder = new boolean[1];
+        stageList.forEach(stage -> {
+            if (doneHolder[0]) { // breakの代わり (以降は何もしない)
+                return;
+            }
             if (stage.startsWith("br")) {
-                continue;
+                return; // continueの代わり
             }
-            sea = stage;
+            seaHolder[0] = stage;
             if (stage.contains("ga")) {
-                break;
+                doneHolder[0] = true; // breakの代わり (次の要素からは処理をスキップ)
             }
-        }
+        });
+        String sea = seaHolder[0];
         log(sea); // should be same as before-fix
     }
 
@@ -289,12 +294,20 @@ public class Step02IfForTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     * このループが終わった後、seaの中身は？(後置インクリメントの評価順を意識して)
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_iffor_yourExercise() {
-        // write your code here
+        int sea = 0;
+        int land = 0;
+        for (int i = 0; i < 5; i++) {
+            if (land++ < 2) { // landの「増える前の値」で比較されてから増える (後置なので)
+                continue;
+            }
+            sea += i;
+        }
+        log(sea); // your answer? => 9 | o (2 + 3 + 4)
     }
 
     // ===================================================================================
