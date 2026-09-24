@@ -40,6 +40,16 @@ public class Step03DataTypeTest extends PlainTestCase {
     public void test_datatype_basicType() {
         String sea = "mystic";
         Integer land = 416;
+        // #1on1: Date(日付), DateTime(日時)の言葉 (2026/09/24)
+        // Date(日付): 年月日
+        // DateTime(日時): 年月日 + 時分秒 (+ ミリ秒)
+        //
+        // ただ、歴史的なところもあって、時々こうじゃないことがあるので注意。
+        // 例えば、Dateと言っているのに時分秒があるとか。
+        // e.g. java.util.Date, OracleDB DATE型が時分秒持ってる
+        //
+        // 日付の狭義の意味と、広義の意味があるかも。
+        //
         LocalDate piari = LocalDate.of(2001, 9, 4); // immutable
         LocalDateTime bonvo = LocalDateTime.of(2001, 9, 4, 12, 34, 56); // immutable
         Boolean dstore = true;
@@ -83,6 +93,9 @@ public class Step03DataTypeTest extends PlainTestCase {
             sea = 0;
         }
         log(sea); // your answer? => 2 | o
+
+        // #1on1: 教訓としては、極力こういうコードを書かないで良い良いに(できれば)する (2026/09/24)
+        // #1on1: 何気ないキャストが情報をロスさせることがあるので注意 (2026/09/24)
     }
 
     // ===================================================================================
