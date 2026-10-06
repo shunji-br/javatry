@@ -163,8 +163,27 @@ public class Step04MethodTest extends PlainTestCase {
         }
     }
 
+    // #1on1: いいね、メソッドの定義位置が呼び出し順序と一致していて直感的で把握しやすい印象 (2026/10/06)
+    // なんだかんだ人間、そういった付与情報に頼って頭の整理をしていたりする。
+    // $上か下かは気にしてないけど、処理の流れやまとまりは意識して近くに置く。
+    // 正解があるわけじゃないけど、何かしらの配慮があると読み手は嬉しい。
+    // 「処理の順序」と「まとまり」ここがバッティングすることもある。
+    // jfluteの場合、まとまりの存在感がどのくらいか？
+    // 「処理の順序」と「まとまり」のハイブリッド。
+    // 厳密には、「まとまり」を優先して、その後「処理の順序」を意識する。
+    // LastaFluteのActionRequestProcessorの例。
+    //
+    // // 別にパソコンがなくてもプログラミングはできるよ
+    // https://jflute.hatenadiary.jp/entry/20170923/nopcpg
+    //
+    // ↑の焼き付けやすいコードを意識することで、作業効率よくする。
+    //
+    // コード体裁デザインというのに意識を持ってもらいたい。
+    // 良いコードはAIによって引き継がれる。「コード体裁デザイン」
+
     // write methods here
     // https://docs.oracle.com/javase/jp/8/docs/api/java/lang/String.html#replace-char-char-
+
     private String replaceAwithB(String target) {
         return target.replace("A", "B");
     }
@@ -173,6 +192,11 @@ public class Step04MethodTest extends PlainTestCase {
         return target.replace("C", "B");
     }
 
+    // #1on1: いいね、第二引数名がわかりやすい (2026/10/06)
+    // 普通のローカル変数よりも、引数名は大事。
+    // 引数名は、メソッドのインターフェース。呼び出す側が意識する変数。
+    // 名前をしっかりつける費用対効果が高い。
+    // せっかくなので、Stringのjavadocを見ながら標準APIの引数名の付け方を見てみた。
     private String quote(String target, String quotation) {
         return quotation + target + quotation;
     }
