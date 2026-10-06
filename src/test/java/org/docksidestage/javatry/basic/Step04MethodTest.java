@@ -22,7 +22,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author shunji suzuki
  */
 public class Step04MethodTest extends PlainTestCase {
 
@@ -34,28 +34,28 @@ public class Step04MethodTest extends PlainTestCase {
      * (メソッド終了時の変数 sea の中身は？)
      */
     public void test_method_call_basic() {
-        String sea = supplySomething();
-        log(sea); // your answer? =>
+        String sea = supplySomething(); // overをもらう
+        log(sea); // your answer? => over | o
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_method_call_many() {
-        String sea = functionSomething("mystic");
-        consumeSomething(supplySomething());
-        runnableSomething();
-        log(sea); // your answer? => 
+        String sea = functionSomething("mystic"); // "tic"を"mys"に置換 -> "mysmys" (sea自体はこの後書き換わらない)
+        consumeSomething(supplySomething()); // "over"を受け取り"mystic"に置換してログするだけ
+        runnableSomething(); // seaとは無関係のローカル処理 (outofshadowを出すだけ)
+        log(sea); // your answer? => mysmys | o
     }
 
     private String functionSomething(String name) {
-        String replaced = name.replace("tic", "mys");
+        String replaced = name.replace("tic", "mys"); // mysmys | インスタンス生成
         log("in function: {}", replaced);
         return replaced;
     }
 
     private String supplySomething() {
         String sea = "over";
-        log("in supply: {}", sea);
-        return sea;
+        log("in supply: {}", sea); // カンマ区切りってどうなるんだ？ブレースの中にseaが入るのか？だとしたら"in supply: over"か | o
+        return sea; // 返すもの自体は over 
     }
 
     private void consumeSomething(String sea) {
@@ -72,17 +72,18 @@ public class Step04MethodTest extends PlainTestCase {
         St4MutableStage mutable = new St4MutableStage();
         int sea = 904;
         boolean land = false;
-        helloMutable(sea - 4, land, mutable);
+        helloMutable(sea - 4, land, mutable); // 戻り値は受け取っていないので捨てられる
         if (!land) {
-            sea = sea + mutable.getStageName().length();
+            sea = sea + mutable.getStageName().length(); // 904 + 6 (mystic)
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 910 | o
     }
+    // Mutableなオブジェクトだから、Immutableと違って中身を塗り替える。
 
     private int helloMutable(int sea, Boolean land, St4MutableStage piari) {
-        sea++;
-        land = true;
-        piari.setStageName("mystic");
+        sea++; // 引数のseaは900のコピーなので、ローカル変数で901
+        land = true; // ここもローカル
+        piari.setStageName("mystic"); // 呼び出し元のmutableと同じインスタンスを触っている
         return sea;
     }
 
@@ -108,21 +109,22 @@ public class Step04MethodTest extends PlainTestCase {
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_method_instanceVariable() {
         hasAnnualPassport = true;
-        int sea = inParkCount;
+        int sea = inParkCount; // intの初期値は0
         offAnnualPassport(hasAnnualPassport);
         for (int i = 0; i < 100; i++) {
-            goToPark();
+            goToPark(); // hasAnnualPassportはtrueのままなので100回カウントされる
         }
-        ++sea;
+        ++sea; // 1になるが、次の行で上書きされるので意味なし
         sea = inParkCount;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 100 | o
     }
 
     private void offAnnualPassport(boolean hasAnnualPassport) {
-        hasAnnualPassport = false;
+        hasAnnualPassport = false; // 引数のhasAnnualPassportを書き換えているだけ (インスタンス変数の中身を変えたいんだったらthis.hasAnnualPassportでやらないと)
     }
 
     private void goToPark() {
+        // 引数ないからインスタンス変数が呼ばれる
         if (hasAnnualPassport) {
             ++inParkCount;
         }
@@ -132,6 +134,8 @@ public class Step04MethodTest extends PlainTestCase {
     //                                                                           Challenge
     //                                                                           =========
     // write instance variables here
+    private boolean availableLogging = true;
+
     /**
      * Make private methods as followings, and comment out caller program in test method:
      * <pre>
@@ -152,12 +156,32 @@ public class Step04MethodTest extends PlainTestCase {
      */
     public void test_method_making() {
         // use after making these methods
-        //String replaced = replaceCwithB(replaceAwithB("ABC"));
-        //String sea = quote(replaced, "'");
-        //if (isAvailableLogging()) {
-        //    showSea(sea);
-        //}
+        String replaced = replaceCwithB(replaceAwithB("ABC")); // ABC -> BBC -> BBB
+        String sea = quote(replaced, "'");
+        if (isAvailableLogging()) {
+            showSea(sea); // 'BBB'
+        }
     }
 
     // write methods here
+    // https://docs.oracle.com/javase/jp/8/docs/api/java/lang/String.html#replace-char-char-
+    private String replaceAwithB(String target) {
+        return target.replace("A", "B");
+    }
+
+    private String replaceCwithB(String target) {
+        return target.replace("C", "B");
+    }
+
+    private String quote(String target, String quotation) {
+        return quotation + target + quotation;
+    }
+
+    private boolean isAvailableLogging() {
+        return availableLogging;
+    }
+
+    private void showSea(String sea) {
+        log(sea);
+    }
 }
