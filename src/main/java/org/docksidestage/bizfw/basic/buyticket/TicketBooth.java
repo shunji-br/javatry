@@ -59,7 +59,7 @@ public class TicketBooth {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
-        --quantity;
+        // --quantity;
         if (handedMoney < ONE_DAY_PRICE) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
@@ -68,6 +68,7 @@ public class TicketBooth {
         } else { // first purchase
             salesProceeds = handedMoney;
         }
+        --quantity;
     }
 
     public static class TicketSoldOutException extends RuntimeException {
@@ -80,6 +81,7 @@ public class TicketBooth {
     }
 
     public static class TicketShortMoneyException extends RuntimeException {
+        // https://docs.oracle.com/javase/jp/8/docs/api/java/lang/RuntimeException.html
 
         private static final long serialVersionUID = 1L;
 

@@ -28,7 +28,7 @@ import org.docksidestage.unit.PlainTestCase;
  * (要件が曖昧なところがあれば、適切だと思われる仕様を決めても良いです)
  * 
  * @author jflute
- * @author your_name_here
+ * @author shunji suzuki
  */
 public class Step05ClassTest extends PlainTestCase {
 
@@ -39,11 +39,14 @@ public class Step05ClassTest extends PlainTestCase {
      * What string is sea variable at the method end? <br>
      * (メソッド終了時の変数 sea の中身は？)
      */
+    // TicketBooth は7400円の10枚のチケット売られている
+    // salesProceeds: Integer
+
     public void test_class_howToUse_basic() {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(7400);
         int sea = booth.getQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9 | o
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -51,27 +54,27 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(10000);
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10000 | o
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_nosales() {
         TicketBooth booth = new TicketBooth();
-        Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 
+        Integer sea = booth.getSalesProceeds(); // Integer初期値だからnullか
+        log(sea); // your answer? => null | 0
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_class_howToUse_wrongQuantity() {
         Integer sea = doTest_class_ticket_wrongQuantity();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 9 | o
     }
 
     private Integer doTest_class_ticket_wrongQuantity() {
         TicketBooth booth = new TicketBooth();
         int handedMoney = 7399;
         try {
-            booth.buyOneDayPassport(handedMoney);
+            booth.buyOneDayPassport(handedMoney); // 所持金足りなくてもデクリメントしてるから9
             fail("always exception but none");
         } catch (TicketShortMoneyException continued) {
             log("Failed to buy one-day passport: money=" + handedMoney, continued);
@@ -89,6 +92,7 @@ public class Step05ClassTest extends PlainTestCase {
     public void test_class_letsFix_ticketQuantityReduction() {
         Integer sea = doTest_class_ticket_wrongQuantity();
         log(sea); // should be max quantity, visual check here
+        // done
     }
 
     /**
