@@ -17,8 +17,8 @@ package org.docksidestage.javatry.basic;
 
 import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
-import org.docksidestage.bizfw.basic.buyticket.TicketBuyResult;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth.TicketShortMoneyException;
+import org.docksidestage.bizfw.basic.buyticket.TicketBuyResult;
 import org.docksidestage.unit.PlainTestCase;
 
 /**
@@ -125,7 +125,7 @@ public class Step05ClassTest extends PlainTestCase {
     // 今回の件が、UnitTestでちゃんと見つかるように実装されているか？
     // AIにいかに理想のアサートを書かせるか？人間がいかにその理想を知ってるか？
 
-    // TODO jflute 次回1on1ここから (2026/10/19)
+    // done jflute 次回1on1ここから (2026/10/19)
     /**
      * Make method for buying two-day passport (price is 13200). (which can return change as method return value)
      * (TwoDayPassport (金額は13200) も買うメソッドを作りましょう (戻り値でお釣りをちゃんと返すように))
@@ -148,6 +148,7 @@ public class Step05ClassTest extends PlainTestCase {
         // x 料金: 定数は作らず ONE_DAY_PRICE * 2 で出す（13200を見落としていた）
         //   → 7400 * 2 = 14800 で、問題文の 13200 にならない (2日券はまとめ買いで安い)
         //   → TWO_DAY_PRICE として素直に持つ。個人的には割引率とかの定数作って日数ごとに安くなる仕組みにしたい。
+        // #1on1: 業務の値段の決めが計算で求まるのか？感覚的な決めなのか？そこ次第ではあるかも。 (2026/11/11)
     }
 
     /**
@@ -163,6 +164,8 @@ public class Step05ClassTest extends PlainTestCase {
         //
         // 共通化してて気づいた: quantity は OneDay/TwoDay で共通でいいの？
         // 実際のパークだと券種ごとに在庫を分けるほうが自然そう
+        // #1on1: いいね、いいの？って思った事自体がいい (2026/11/11)
+        // 業務のイメージを持つこと自体もトレーニング。
     }
 
     // ===================================================================================
@@ -198,6 +201,7 @@ public class Step05ClassTest extends PlainTestCase {
         // 13200 + 6800 = 20000
     }
 
+    // TODO jflute 次回1on1ここから (2026/11/11)
     /**
      * Now you can use only one in spite of two-day passport, so fix Ticket to be able to handle plural days. <br>
      * (TwoDayPassportなのに一回しか利用できません。複数日数に対応できるようにTicketを修正しましょう)

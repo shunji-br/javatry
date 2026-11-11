@@ -15,6 +15,7 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
+// TODO suzuki javatryルールとして何か修正したらauthor追加をお願いします by jflute (2026/11/11)
 /**
  * @author jflute
  */
@@ -64,6 +65,15 @@ public class TicketBooth {
         return new Ticket(ONE_DAY_PRICE);
     }
 
+    // #1on1: いいね、JavaDoc綺麗にありがとうございます (2026/11/11)
+    // publicメソッドなので、案内という感じで入れておきたい。
+    // いいね、具体値を提示していることで、result of purchaseの概念理解につながっている。
+    // いいね、(NotNull) ありがとうございます。
+    // Javaとか値の有無を文法として表現できない言語だと、コメントの(NotNull)がめちゃ嬉しい。
+    // LastaFluteとかLocalDateとかのJavaDocの例を見てみた。
+    // TODO suzuki 断定列挙すると、ちょっと誤解を生む可能性もある。レシートが増えた時... by jflute (2026/11/11)
+    // 断定列挙ではなく、"例えば列挙" にする。"e.g.", "など", "etc"
+    // ここでやりたいのは、「resultの内訳網羅の伝達」ではなく、「概念理解の促進」である。
     /**
      * Buy two-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -79,6 +89,18 @@ public class TicketBooth {
 
     // OneDayとTwoDayで違うのは料金だけなので、料金を引数にして共通化
     // お釣りを返すのはTwoDayだけだが、共通処理では返しておく
+    // #1on1: doBuyという名前、非常に良い！ (2026/11/11)
+    // $自然とおもいついた → buyPassportが単なる共通メソッドなので外したかった
+    // buyのままだと、メソッド一覧で紛れて見づらい、会話上区別がしづらい (些細だけど)
+    // doBuyとprefixを変えて区別するやり方、わりと一般的に行われる小テクニック。
+    // e.g. doBuyPassport(), internalBuyPassport()
+    // TODO suzuki 戻り値がお釣りであることをどこかで示したい by jflute (2026/11/11)
+    // o javadocで表現 (privateメソッドでも重要ロジックだったら書いても費用対効果高い)
+    // o 計算の横にすらすらで handedMoney - price; // お釣り と書く
+    // o 変数で表現する int change = handedMoney - price;
+    // o メソッド表現する calculateChange()
+    // $変数に関してはlintで言われるかもしれない
+    // そうだったらもう別の方法で。
     private int doBuyPassport(int price, Integer handedMoney) {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");

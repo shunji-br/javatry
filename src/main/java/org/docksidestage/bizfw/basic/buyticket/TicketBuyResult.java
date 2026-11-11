@@ -32,6 +32,17 @@ public class TicketBuyResult {
     //                                                                         Constructor
     //                                                                         ===========
     public TicketBuyResult(Ticket ticket, int change) {
+        // #1on1: 他のアンチパターンの紹介 (2026/11/11)
+        // o 引数と定義の順序違い
+        // o getChange()でお釣りの計算
+        //  (getのコンセプトから来るもの)
+        //  i getだと何度も呼ばれる可能性
+        //  i getのコンセプト的にそこにロジックがあると思わないので見つけづらい
+        //  (resultのコンセプトから来るもの)
+        //  i 入れ物クラス感が強い
+        //  i 仮にResultProvider, ResultCreator
+        // 
+        // new Ticket()も似た話。コンストラクターでやるにしてもコンセプトから一般的ではない。
         this.ticket = ticket;
         this.change = change;
     }
