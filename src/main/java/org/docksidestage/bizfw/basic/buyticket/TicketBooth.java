@@ -25,6 +25,7 @@ public class TicketBooth {
     //                                                                          ==========
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    private static final int TWO_DAY_PRICE = 13200;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -52,10 +53,33 @@ public class TicketBooth {
     /**
      * Buy one-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
+     * @return The ticket of one-day passport. (NotNull)
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
-    public void buyOneDayPassport(Integer handedMoney) {
+    public Ticket buyOneDayPassport(Integer handedMoney) {
+        doBuyPassport(ONE_DAY_PRICE, handedMoney);
+        // チケットの種類はOneDayとTwoDayで違うので、チケットはそれぞれのメソッドで作って返す
+        // (お釣りの計算は共通処理で)
+        return new Ticket(ONE_DAY_PRICE);
+    }
+
+    /**
+     * Buy two-day passport, method for park guest.
+     * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
+     * @return The result of purchase, which has the ticket of two-day passport and the change. (NotNull)
+     * @throws TicketSoldOutException When ticket in booth is sold out.
+     * @throws TicketShortMoneyException When the specified money is short for purchase.
+     */
+    public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
+        int change = doBuyPassport(TWO_DAY_PRICE, handedMoney);
+        // チケットとお釣りの両方を返したいので、まとめて持つ TicketBuyResult
+        return new TicketBuyResult(new Ticket(TWO_DAY_PRICE), change);
+    }
+
+    // OneDayとTwoDayで違うのは料金だけなので、料金を引数にして共通化
+    // お釣りを返すのはTwoDayだけだが、共通処理では返しておく
+    private int doBuyPassport(int price, Integer handedMoney) {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
@@ -76,15 +100,16 @@ public class TicketBooth {
         // (それぞれの処理の、前後関係だいじょうぶかな？って常に疑うくらいの意識で良い)
         //
         //--quantity;
-        if (handedMoney < ONE_DAY_PRICE) {
+        if (handedMoney < price) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
         if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + handedMoney;
+            salesProceeds = salesProceeds + price;
         } else { // first purchase
-            salesProceeds = handedMoney;
+            salesProceeds = price;
         }
         --quantity;
+        return handedMoney - price;
     }
 
     public static class TicketSoldOutException extends RuntimeException {

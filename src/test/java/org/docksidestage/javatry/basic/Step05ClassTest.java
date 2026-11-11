@@ -15,7 +15,9 @@
  */
 package org.docksidestage.javatry.basic;
 
+import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
+import org.docksidestage.bizfw.basic.buyticket.TicketBuyResult;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth.TicketShortMoneyException;
 import org.docksidestage.unit.PlainTestCase;
 
@@ -54,7 +56,7 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(10000);
         Integer sea = booth.getSalesProceeds();
-        log(sea); // your answer? => 10000 | o
+        log(sea); // your answer? => 10000 | o (修正後は 7400)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -104,6 +106,7 @@ public class Step05ClassTest extends PlainTestCase {
         booth.buyOneDayPassport(10000);
         Integer sea = booth.getSalesProceeds();
         log(sea); // should be same as one-day price, visual check here
+        // done salesProceedsに受け取ったお金ではなく単価を足す
     }
 
     // #1on1: 二つの特徴的なバグ (2026/10/19)
@@ -128,14 +131,23 @@ public class Step05ClassTest extends PlainTestCase {
      * (TwoDayPassport (金額は13200) も買うメソッドを作りましょう (戻り値でお釣りをちゃんと返すように))
      */
     public void test_class_letsFix_makeMethod_twoday() {
-        // uncomment after making the method
-        //TicketBooth booth = new TicketBooth();
-        //int money = 14000;
-        //int change = booth.buyTwoDayPassport(money);
-        //Integer sea = booth.getSalesProceeds() + change;
-        //log(sea); // should be same as money
+        TicketBooth booth = new TicketBooth();
+        int money = 14000;
+        // 戻り値が TicketBuyResult になったので、お釣りは buyResult.getChange() で取る
+        TicketBuyResult buyResult = booth.buyTwoDayPassport(money);
+        int change = buyResult.getChange();
+        Integer sea = booth.getSalesProceeds() + change;
+        log(sea); // should be same as money | o
 
         // and show two-day passport quantity here
+        // 在庫はOneDayと共有で、TwoDayも1枚減らす仕様にしたので 10 - 1 = 9 | o
+        log(booth.getQuantity());
+        // 10 - 1 = 9 | o
+        //
+        // 一回目の回答で間違えたところ
+        // x 料金: 定数は作らず ONE_DAY_PRICE * 2 で出す（13200を見落としていた）
+        //   → 7400 * 2 = 14800 で、問題文の 13200 にならない (2日券はまとめ買いで安い)
+        //   → TWO_DAY_PRICE として素直に持つ。個人的には割引率とかの定数作って日数ごとに安くなる仕組みにしたい。
     }
 
     /**
@@ -146,6 +158,11 @@ public class Step05ClassTest extends PlainTestCase {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(10000);
         log(booth.getQuantity(), booth.getSalesProceeds()); // should be same as before-fix
+        // done 修正前: 9, 7400 → 修正後: 9, 7400
+        // 違うのは料金だけなので、料金を引数にしてお釣りを返す private メソッドに共通化
+        //
+        // 共通化してて気づいた: quantity は OneDay/TwoDay で共通でいいの？
+        // 実際のパークだと券種ごとに在庫を分けるほうが自然そう
     }
 
     // ===================================================================================
@@ -156,13 +173,14 @@ public class Step05ClassTest extends PlainTestCase {
      * (OneDayPassportを買ってもチケットをもらえませんでした。戻り値でTicketクラスを戻すようにしてインしましょう)
      */
     public void test_class_moreFix_return_ticket() {
-        // uncomment out after modifying the method
-        //TicketBooth booth = new TicketBooth();
-        //Ticket oneDayPassport = booth.buyOneDayPassport(10000);
-        //log(oneDayPassport.getDisplayPrice()); // should be same as one-day price
-        //log(oneDayPassport.isAlreadyIn()); // should be false
-        //oneDayPassport.doInPark();
-        //log(oneDayPassport.isAlreadyIn()); // should be true
+        TicketBooth booth = new TicketBooth();
+        Ticket oneDayPassport = booth.buyOneDayPassport(10000);
+        log(oneDayPassport.getDisplayPrice()); // should be same as one-day price
+        log(oneDayPassport.isAlreadyIn()); // should be false
+        oneDayPassport.doInPark();
+        log(oneDayPassport.isAlreadyIn()); // should be true
+        // done 戻り値をTicketにして、buyOneDayPassport()の中で new Ticket(ONE_DAY_PRICE) して返す
+        // チケットの種類はワンデイ、ツーデイで違うのでそれぞれで返す。お釣りの計算は共通処理のまま
     }
 
     /**
@@ -170,13 +188,14 @@ public class Step05ClassTest extends PlainTestCase {
      * (TwoDayPassportもチケットをもらえませんでした。チケットとお釣りを戻すクラスを作って戻すようにしましょう)
      */
     public void test_class_moreFix_return_whole() {
-        // uncomment after modifying the method
-        //TicketBooth booth = new TicketBooth();
-        //int handedMoney = 20000;
-        //TicketBuyResult buyResult = booth.buyTwoDayPassport(handedMoney);
-        //Ticket twoDayPassport = buyResult.getTicket();
-        //int change = buyResult.getChange();
-        //log(twoDayPassport.getDisplayPrice() + change); // should be same as money
+        TicketBooth booth = new TicketBooth();
+        int handedMoney = 20000;
+        TicketBuyResult buyResult = booth.buyTwoDayPassport(handedMoney);
+        Ticket twoDayPassport = buyResult.getTicket();
+        int change = buyResult.getChange();
+        log(twoDayPassport.getDisplayPrice() + change); // should be same as money
+        // done TicketBuyResult を buyticketパッケージに作って、ticket と change を final で持つ
+        // 13200 + 6800 = 20000
     }
 
     /**
