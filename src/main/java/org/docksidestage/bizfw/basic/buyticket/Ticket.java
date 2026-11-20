@@ -15,6 +15,17 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
+// #1on1: O/Rマッパーについて (2026/11/20)
+// $Pythonのdjangoのイメージだったら、DBFluteちょっと違った
+// o DDL, スキーマ定義、どこが元なのか？
+// o 実装面のConditionBeanみたいな
+//
+// DBFluteのお話:
+// o Introductionでコンセプト説明
+// o DB管理支援ツール
+// o ConditionBeanのライブコーディング (FK情報まで使って自動生成)
+// o 外だしSQLの概要
+// o 実務でビュー使った話
 /**
  * @author jflute
  */
